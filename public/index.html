@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Link Engel Test</title>
+</head>
+<body>
+  <h1>Link Engel API Test</h1>
+  <input type="text" id="message" placeholder="Mesajınızı yazın...">
+  <button onclick="checkMessage()">Gönder</button>
+  <p id="result"></p>
+
+  <script>
+    async function checkMessage() {
+      const msg = document.getElementById('message').value;
+      const apiUrl = "/api/check"; // Vercel’de deploy edince otomatik çalışır
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg })
+        });
+
+        const data = await response.json();
+        document.getElementById("result").innerText =
+          data.blocked
+            ? "🚫 Mesaj link içeriyor!"
+            : "✅ Mesaj temiz.";
+      } catch (err) {
+        document.getElementById("result").innerText = "Hata: " + err;
+      }
+    }
+  </script>
+</body>
+</html>
